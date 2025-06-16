@@ -1,23 +1,102 @@
-# Citi Bike Machine Learning Analysis
+# 🚲 Citi Bike Machine Learning Analysis
 
-Citi Bike, New York City’s largest bike-sharing system, is a cornerstone of sustainable urban transportation. Understanding trends in its usage can help optimize infrastructure, enhance user experience, and support accessibility. Analyzing historical trip data enables us to uncover key patterns, such as peak usage times, popular stations, and trip durations, providing actionable insights to improve the system.
+Citi Bike, New York City's largest bike-sharing system, plays a crucial role in promoting sustainable urban transportation. By analyzing historical trip data, this project aims to uncover usage patterns that can help optimize operations, enhance user experience, and support infrastructure planning.
 
-## Baseline Models
+## 📊 Project Objectives
 
-To establish baseline performance metrics, we implemented two simple models. First, we used a linear regression algorithm to predict trip duration based on features such as start and end stations, bike type, date, start and end time, and latitude and longitude. Second, we applied a logistic regression model to classify whether a Citi Bike user was a casual rider or a member, using the same input variables. The linear regression model achieved an R^2 score of 0.0148 on the test set, while the logistic regression model attained an overall accuracy of 81%. Although these baseline models lacked hyperparameter tuning and performed poorly in capturing complex patterns, they provided a starting point for further refinement.
+* Predict **trip duration** based on user and trip features
+* Classify riders as **casual users vs members**
+* Cluster **stations** by usage and location
+* **Forecast ride demand** over time
+* Evaluate a **neural network** for predictive performance
 
-## Random Forest Regression
+---
 
-We implemented a Random Forest Regression model to predict trip duration for Citi Bike users. To enhance model performance, we employed random search for hyperparameter tuning, optimizing key parameters such as the number of estimators, maximum tree depth, minimum samples required for splits, minimum leaf size, and the maximum number of features. After training the tuned model, we observed a significant reduction in the Root Mean Squared Error (RMSE) from 7.32 on the baseline model to 4.67, indicating that hyperparameter tuning substantially improved the model’s predictive accuracy. Furthermore, the R^2 value increased to 0.59, demonstrating that the tuned model explains 59% of the variance in trip duration, a notable improvement over the baseline. 
+## ⚙️ Baseline Models
 
-## Clustering
+To establish benchmarks, we implemented two simple models:
 
-We performed clustering to analyze patterns among Citi Bike stations, focusing on geographic groupings. Using K-means clustering, we first explored the data with 5 clusters. At this level, we observed significant overlap between clusters 1 and 3, as well as between clusters 2 and 4. Additionally, cluster 0 emerged as the dominant cluster, overlapping extensively with stations from all other clusters. To further investigate this phenomenon, we reduced the number of clusters to n=3. While this reduction simplified the clustering structure, one cluster continued to dominate. By leveraging the longitude and latitude columns from the dataset, we identified the location of this dominant cluster: midtown east, a bustling area of the city with high activity levels.
+* **Linear Regression**: Predicted trip duration using features like start/end stations, bike type, trip time, and location.
 
-## Forecasting
+  * **R² Score:** 0.0148
+* **Logistic Regression**: Classified users as members or casual riders.
 
-We used time-series models, including ARIMA and SARIMA, to analyze Citi Bike’s daily ride counts and uncover seasonal patterns. Usage peaked in spring and summer, dipped in winter, and showed distinct weekly trends, with commuter rides dominating weekdays and leisure rides on weekends. The models also highlighted the impact of external factors, such as a sharp drop in rides on Christmas Day due to holidays. SARIMA outperformed ARIMA by capturing recurring seasonal patterns, as reflected in improved RMSE and MAE scores. These insights enable Citi Bike to optimize bike and dock availability during peak demand and schedule maintenance during off-peak times, fostering efficiency, user satisfaction, and sustainable transportation.
+  * **Accuracy:** 81%
 
-## Neural Network
+These models lacked complexity and tuning but served as starting points for deeper exploration.
 
-We can see that the training loss curve decreases steadily over the epochs, indicating that it is successfully learning patterns in the training data. The test loss curve decreases initially but starts to stabilize and fluctuate around epoch 6. This indicates that the model's generalization to unseen data may be limited. Interestingly, the loss for the training set is consistently higher than the test set, which is unusual. Lastly, the R^2 score on the test set was only 6.1%, indicating that the model did not fit our dataset very well.  
+---
+
+## 🌲 Random Forest Regression
+
+To improve trip duration prediction, we implemented a **Random Forest Regressor** with hyperparameter tuning via **randomized search**.
+
+* **Optimized Parameters:** `n_estimators`, `max_depth`, `min_samples_split`, `min_samples_leaf`, `max_features`
+* **Performance:**
+
+  * **RMSE:** Reduced from 7.32 → **4.67**
+  * **R² Score:** Increased from 0.0148 → **0.59**
+
+The tuned model captured non-linear relationships significantly better than the baseline.
+
+---
+
+## 📍 Station Clustering
+
+We used **K-Means Clustering** to group Citi Bike stations based on geographic location:
+
+* Initial experiment: `n=5` clusters
+
+  * Resulted in significant overlap between clusters
+* Refined experiment: `n=3` clusters
+
+  * One dominant cluster centered in **Midtown East**, a high-traffic area
+
+Using **latitude and longitude**, we visualized station groupings to support service area planning and bike redistribution strategies.
+
+---
+
+## 📈 Time Series Forecasting
+
+To understand **seasonal ride trends**, we applied:
+
+* **ARIMA**
+* **SARIMA** (seasonal component)
+
+**Key insights:**
+
+* **Seasonal peaks** in spring/summer, dips in winter
+* **Weekday vs weekend** usage patterns (commuters vs leisure riders)
+* Clear drop on **holidays** (e.g., Christmas Day)
+* **SARIMA** outperformed ARIMA in capturing periodic trends
+
+These models can help Citi Bike forecast demand, optimize fleet availability, and plan maintenance cycles.
+
+---
+
+## 🧠 Neural Network Model
+
+We developed a simple feedforward neural network using PyTorch to predict trip duration.
+
+* **Training loss** decreased steadily
+* **Test loss** plateaued and fluctuated after \~6 epochs
+* **Unexpected result:** Test loss was consistently **lower** than training loss
+* **R² Score (test set):** **6.1%**
+
+This underperformance suggests potential overfitting or model/data mismatches, calling for more advanced architectures or feature engineering.
+
+---
+
+## 🛠️ Tools & Technologies
+
+* **Python** (Pandas, NumPy, Matplotlib, Seaborn)
+* **Scikit-learn** (Linear/Logistic Regression, Random Forest, K-Means)
+* **Statsmodels** (ARIMA, SARIMA)
+* **PyTorch** (Neural Network)
+* **Jupyter Notebook** for experimentation and visualization
+
+---
+
+## 📌 Conclusion
+
+This end-to-end analysis showcases how traditional ML, clustering, time-series models, and deep learning can be used to gain actionable insights into urban mobility systems like Citi Bike. From predicting demand to understanding rider behavior, the results inform smarter, data-driven decisions for city planners and service providers alike.
